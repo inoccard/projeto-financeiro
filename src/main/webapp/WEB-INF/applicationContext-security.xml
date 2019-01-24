@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+	<!-- elemento http responsável por ser um agrupador de configurações referentes ao
+	contexto web do sistema -->
+	<http auto-config="true">
+		<!-- elemento intercept url determina quais páginas ou diretórios serão seguros,
+		o atributo pattern determina o padrão textual da URL, e o acess é uma lista
+		separada por virgula com os nomes de permissoes que terao acesso ao recurso -->
+		<intercept-url pattern="/admin/**" access="ROLE_ADMINISTRADOR" />
+		<intercept-url pattern="/restrito/**" access="ROLE_USUARIO" />
+		<!-- o elemento form-login configura o funcionamento das paginas de login do spring security
+		o atributo login-page configura a url para exibir a página, como o atributo always-use-default-target
+		está configurado com true, o usuario será direcionado após o login para a página que está definida
+		em default-target-url, caso o login não seja realizado com sucesso a url exibida será a especificada
+		em authentication-failure-url-->
+		<form-login login-page="/publico/login.jsf"
+			always-use-default-target="true" default-target-url="/restrito/principal.jsf"
+			authentication-failure-url="/publico/login.jsf?login_error=1" />
+		<!-- o atributo logout é utilizado para habilitar o recurso de logout para o sistema, com 
+		esse atributo habilitado basta chamar a URL /j_spring_security_logout para que o usuário seja 
+		deslogado do sistema e sua sessão seja invalidada -->
+		<logout />
+		<remember-me />
+	</http>
+	<authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="financeiroDataSource"
+				authorities-by-username-query="SELECT u.login, p.permissao
+																	FROM usuario u, usuario_permissao p
+																	WHERE u.codigo = p.usuario AND u.login = ?"
+				users-by-username-query="SELECT login, senha, ativo FROM usuario WHERE login = ?" />
+		</authentication-provider>
+	</authentication-manager>
+</beans:beans>

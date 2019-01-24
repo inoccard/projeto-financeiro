@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="connection.datasource">java:/comp/env/jdbc/FinanceiroDB</property>
+		<property name="current_session_context_class">thread</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<!-- Configurações de debug -->
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="generate_statistics">true</property>
+		<property name="use_sql_comments">true</property>
+
+		<mapping class="br.com.financeiro.entities.Usuario" />
+		<mapping class="br.com.financeiro.entities.Conta" />
+		<mapping class="br.com.financeiro.entities.Categoria" />
+		<mapping class="br.com.financeiro.entities.Lancamento" />
+		
+	</session-factory>
+</hibernate-configuration>
