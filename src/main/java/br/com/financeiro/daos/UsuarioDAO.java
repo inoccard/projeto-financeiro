@@ -39,7 +39,5 @@ public class UsuarioDAO extends AbstractDAO<Usuario> {
 
 		super.atualizar(usuario);
 	}
-	
-	
 
 }
